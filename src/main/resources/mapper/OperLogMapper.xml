@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.aisencode.mapper.OperLogMapper">
+
+    <!-- 创建系统操作日志 -->
+    <!--<insert id="insertOperlog" parameterType="cn.aisencode.pojo.OperLog">
+		insert into sys_oper_log(title, log_type, oper_method, request_method, oper_type, oper_name, oper_url, oper_ip, oper_location, oper_param, json_result, status, note, create_time)
+        values (#{title}, #{logType}, #{operMethod}, #{requestMethod}, #{operType}, #{operName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{note}, sysdate())
+	</insert>-->
+
+    <select id="getOperlogByPage" resultType="cn.aisencode.pojo.OperLog">
+        SELECT
+            o.*,
+            u.username createUsername,
+            u1.username updateUsername
+        FROM
+            `t_sys_oper_log` o
+                LEFT JOIN t_user u ON o.createUser = u.id
+                LEFT JOIN t_user u1 ON o.updateUser = u1.id
+        where 1 = 1
+        <if test="operLog.createUsername != null and operLog.createUsername != ''">
+            and u.username like concat('%', #{operLog.createUsername},'%')
+        </if>
+        <if test="operLog.updateUsername != null and operLog.updateUsername != ''">
+            and u1.username like concat('%', #{operLog.updateUsername},'%')
+        </if>
+        <if test="operLog.mark != null">
+            and o.mark = #{operLog.mark}
+        </if>
+        <if test="operLog.title != null and operLog.title !=''">
+            and o.title like concat('%', #{operLog.title},'%')
+        </if>
+        <if test="operLog.logType != null">
+            and o.logType = #{operLog.logType}
+        </if>
+        <if test="operLog.operMethod != null and operLog.operMethod !=''">
+            and o.operMethod like concat('%', #{operLog.operMethod},'%')
+        </if>
+        <if test="operLog.requestMethod != null and operLog.requestMethod !=''">
+            and o.requestMethod like concat('%', #{operLog.requestMethod},'%')
+        </if>
+        <if test="operLog.operUrl != null and operLog.operUrl !=''">
+            and o.operUrl like concat('%', #{operLog.operUrl},'%')
+        </if>
+        <if test="operLog.operIp != null and operLog.operIp !=''">
+            and o.operIp like concat('%', #{operLog.operIp},'%')
+        </if>
+        <if test="operLog.operLocation != null and operLog.operLocation !=''">
+            and o.operLocation like concat('%', #{operLog.operLocation},'%')
+        </if>
+        <if test="operLog.operParam != null and operLog.operParam !=''">
+            and o.operParam like concat('%', #{operLog.operParam},'%')
+        </if>
+        <if test="operLog.jsonResult != null and operLog.jsonResult !=''">
+            and o.jsonResult like concat('%', #{operLog.jsonResult},'%')
+        </if>
+        <if test="operLog.status != null">
+            and o.status = #{operLog.status}
+        </if>
+        <if test="operLog.note != null and operLog.note !=''">
+            and o.note like concat('%', #{operLog.note},'%')
+        </if>
+        <if test="operLog.timeout != null">
+            and o.timeout &lt;= #{operLog.timeout}
+        </if>
+        <if test="operLog.browser != null and operLog.browser !=''">
+            and o.browser like concat('%', #{operLog.browser},'%')
+        </if>
+        <if test="operLog.os != null and operLog.os !=''">
+            and o.os like concat('%', #{operLog.os},'%')
+        </if>
+        <if test="operLog.userAgent != null and operLog.userAgent !=''">
+            and o.userAgent like concat('%', #{operLog.userAgent},'%')
+        </if>
+        <if test="createDateScope != null and createDateScope.length == 2">
+            AND o.createTime between #{createDateScope[0]} and #{createDateScope[1]}
+        </if>
+        <if test="updateDateScope != null and updateDateScope.length == 2">
+            AND o.updateTime between #{updateDateScope[0]} and #{updateDateScope[1]}
+        </if>
+        order by o.createTime desc
+    </select>
+
+</mapper>

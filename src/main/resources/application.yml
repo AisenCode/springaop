@@ -1,0 +1,36 @@
+# 端口配置
+server:
+  port: 80
+  #servlet:
+    # 项目的前缀名
+    #context-path: /api
+  #address: 0.0.0.0
+
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: "jdbc:mysql://localhost:3306/javaweb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai"
+    username: root
+    password: root
+
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: 0
+      table-prefix: t_
+      #去掉表名默认驼峰式的以下划线分隔
+      table-underline: false
+  configuration:
+    #去掉字段名默认驼峰式的以下划线分隔
+    map-underscore-to-camel-case: false
+
+# msql 打印方式 debug
+logging:
+  level:
+    cn.aisencode.mapper: debug
+
+
+
+
