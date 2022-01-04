@@ -1,6 +1,6 @@
 
 
-package cn.aisencode.common.config;
+package cn.aisencode.config.threadPool;
 
 
 import cn.aisencode.util.ThreadUtils;
